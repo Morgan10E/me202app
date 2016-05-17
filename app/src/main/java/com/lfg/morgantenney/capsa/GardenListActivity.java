@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
@@ -22,6 +24,9 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.Query;
+//import com.google.android.gms.appindexing.Action;
+//import com.google.android.gms.appindexing.AppIndex;
+//import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.Map;
@@ -34,6 +39,7 @@ public class GardenListActivity extends AppCompatActivity {
     private String userID;
 
     private Firebase gardenListFirebase;
+    private Firebase gardenStatusFirebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +64,7 @@ public class GardenListActivity extends AppCompatActivity {
 
         Firebase rootRef = new Firebase("https://hydrophonic.firebaseio.com/web/data");
         gardenListFirebase = rootRef.child(getString(R.string.garden_list_firebase_child)).child(userID);
+        gardenStatusFirebase = rootRef.child(getString(R.string.garden_status_firebase_child));
         // FIREBASE LOADING HERE
 
         Query queryRef = gardenListFirebase.orderByKey();
@@ -68,6 +75,7 @@ public class GardenListActivity extends AppCompatActivity {
                 if (!list.contains(entry)) {
                     Log.e("ME202", "FOUND CHILD");
                     gAdapter.add(entry);
+                    setupStatusListener(entry);
                     Log.e("ME202", list.size() + "");
                 }
             }
@@ -110,10 +118,13 @@ public class GardenListActivity extends AppCompatActivity {
                 final Dialog modifyGardenDialog = new Dialog(GardenListActivity.this);
                 modifyGardenDialog.setContentView(R.layout.garden_modify_layout);
 
-                final EditText newGardenNameText = (EditText)modifyGardenDialog.findViewById(R.id.newName);
-                Button okButton = (Button)modifyGardenDialog.findViewById(R.id.okButton);
-                Button cancelButton = (Button)modifyGardenDialog.findViewById(R.id.cancelButton);
-                Button deleteButton = (Button)modifyGardenDialog.findViewById(R.id.deleteButton);
+                TextView phID = (TextView) modifyGardenDialog.findViewById(R.id.photonIDstring);
+                phID.setText(getString(R.string.idPrompt) + longClicked.photonID);
+
+                final EditText newGardenNameText = (EditText) modifyGardenDialog.findViewById(R.id.newName);
+                Button okButton = (Button) modifyGardenDialog.findViewById(R.id.okButton);
+                Button cancelButton = (Button) modifyGardenDialog.findViewById(R.id.cancelButton);
+                Button deleteButton = (Button) modifyGardenDialog.findViewById(R.id.deleteButton);
 
                 okButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -128,6 +139,7 @@ public class GardenListActivity extends AppCompatActivity {
                         } else {
                             longClicked.name = newGardenName;
                             gardenListFirebase.child(longClicked.firebaseKey).setValue(longClicked);
+                            gardenStatusFirebase.child(longClicked.photonID).child(getString(R.string.name)).setValue(newGardenName);
                             modifyGardenDialog.dismiss();
                         }
                     }
@@ -166,6 +178,67 @@ public class GardenListActivity extends AppCompatActivity {
         });
     }
 
+    private void setupStatusListener(final Garden garden) {
+        Query queryRef = gardenStatusFirebase.child(garden.photonID).orderByKey();
+
+        queryRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+//                String entry = dataSnapshot.getValue(String.class);
+                switch (dataSnapshot.getKey()) {
+                    case "name":
+                        garden.name = dataSnapshot.getValue(String.class);
+                        Log.e("ME202", "UPDATING NAME");
+                        gAdapter.notifyDataSetChanged();
+                        gardenListFirebase.child(garden.firebaseKey).child(getString(R.string.name)).setValue(garden.name);
+                        break;
+                    case "status":
+                        garden.status = dataSnapshot.getValue(GardenStatus.class);
+                        Log.e("ME202", "UPDATING STATUS");
+                        gAdapter.notifyDataSetChanged();
+                        gardenListFirebase.child(garden.firebaseKey).child(getString(R.string.status)).setValue(garden.status);
+                        break;
+                    default:
+                        Log.e("ME202", "This should not have triggered - bad data");
+                        Log.e("ME202", dataSnapshot.getKey());
+                }
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                switch (dataSnapshot.getKey()) {
+                    case "name":
+                        garden.name = dataSnapshot.getValue(String.class);
+                        Log.e("ME202", "UPDATING NAME");
+                        gAdapter.notifyDataSetChanged();
+                        break;
+                    case "status":
+                        garden.status = dataSnapshot.getValue(GardenStatus.class);
+                        Log.e("ME202", "UPDATING STATUS");
+                        gAdapter.notifyDataSetChanged();
+                        break;
+                    default:
+                        Log.e("ME202", "This should not have triggered - bad data");
+                        Log.e("ME202", dataSnapshot.getKey());
+                }
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+    }
+
 
     public void addNewGarden() {
         String gardenID = getIntent().getStringExtra(getString(R.string.device_id_key));
@@ -174,7 +247,8 @@ public class GardenListActivity extends AppCompatActivity {
             noTextToast.show();
         } else {
             Firebase fKey = gardenListFirebase.push();
-            Garden newEntry = new Garden(gardenID, getString(R.string.water_level_fine), getString(R.string.light_state_on), fKey.getKey(), gardenID);
+            GardenStatus status = new GardenStatus(getString(R.string.light_state_unknown), getString(R.string.light_state_unknown), getString(R.string.light_state_unknown), getString(R.string.light_state_unknown));
+            Garden newEntry = new Garden(gardenID, status, fKey.getKey(), gardenID);
             if (list.contains(newEntry)) {
                 fKey.setValue(null);
             } else {
@@ -211,9 +285,16 @@ public class GardenListActivity extends AppCompatActivity {
                 startActivity(newGardenIntent);
                 return true;
 
+//            case R.id.actionRefreshGardenStatus:
+//                for (Garden garden : list) {
+//
+//                }
+//                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
         }
     }
+
 }

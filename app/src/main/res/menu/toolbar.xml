@@ -2,9 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <item android:id="@+id/actionRefreshGardenStatus"
+        android:icon="@mipmap/refresh"
+        android:title="@string/reload_garden_status"
+        app:showAsAction="always"/>
+
     <item android:id="@+id/actionNewGarden"
+        android:icon="@mipmap/plus"
         android:title="@string/action_new_garden"
-        app:showAsAction="never"/>
+        app:showAsAction="ifRoom"/>
 
     <item android:id="@+id/actionLogout"
         android:title="@string/action_logout"

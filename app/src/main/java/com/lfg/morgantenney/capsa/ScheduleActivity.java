@@ -36,7 +36,7 @@ public class ScheduleActivity extends AppCompatActivity {
         final ListView lv = (ListView) findViewById(R.id.LV);
         lv.setAdapter(adapter);
         ImageView im = (ImageView) findViewById(R.id.image);
-        im.setImageResource(R.drawable.tall_plant);
+        im.setImageResource(R.drawable.tallplant);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

@@ -32,4 +32,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'io.particle:devicesetup:0.3.6'
     compile 'com.firebase:firebase-client-android:2.5.2+'
+    compile 'com.google.android.gms:play-services-appindexing:8.1.0'
 }

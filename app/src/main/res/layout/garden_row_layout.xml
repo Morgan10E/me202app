@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -12,16 +12,20 @@
         android:textSize="@dimen/text_size_large"/>
 
     <LinearLayout
+        android:id="@+id/wLevel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginStart="@dimen/activity_horizontal_margin">
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/gardenName"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/water_level"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 
         <TextView
@@ -33,16 +37,20 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lStat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginStart="@dimen/activity_horizontal_margin">
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
+        android:layout_below="@id/wLevel"
+        android:layout_marginEnd="@dimen/activity_horizontal_margin">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/light_state"
             android:textColor="@color/black"
+            android:textStyle="bold"
             android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 
         <TextView
@@ -53,5 +61,47 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/wLevel"
+        android:layout_below="@id/gardenName">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/ph"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/gardenPH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@id/lStat"
+        android:layout_below="@id/wLevel">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/conductivity"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:layout_marginEnd="@dimen/activity_horizontal_margin"/>
+
+        <TextView
+            android:id="@+id/gardenConductivity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorPrimaryDark"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

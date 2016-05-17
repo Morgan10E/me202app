@@ -5,17 +5,15 @@ package com.lfg.morgantenney.capsa;
  */
 public class Garden {
     public String name;
-    public String waterLevel;
-    public String lightState;
+    public GardenStatus status;
     public String firebaseKey;
     public String photonID;
 
-    public Garden(String name, String waterLevel, String lightState, String firebaseKey, String photonID) {
+    public Garden(String name, GardenStatus status, String firebaseKey, String photonID) {
         this.name = name;
-        this.waterLevel = waterLevel;
-        this.lightState = lightState;
         this.firebaseKey = firebaseKey;
         this.photonID = photonID;
+        this.status = status;
     }
 
     public Garden() {
@@ -23,7 +21,7 @@ public class Garden {
     }
 
     public String toString() {
-        return name + "&" + waterLevel + "&" + lightState + "&" + firebaseKey + "&" + photonID;
+        return name + "&" + firebaseKey + "&" + photonID;
     }
 
     @Override
