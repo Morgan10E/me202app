@@ -1,0 +1,37 @@
+<resources>
+    <string name="app_name">Capsa</string>
+    <string name="email_hint">email</string>
+    <string name="password_hint">password</string>
+    <string name="register">Register</string>
+    <string name="login">Already a user? Log in!</string>
+    <string name="connect_string">When you start connecting, you will be taken to a particle page. You will still be within this app, and will return once you have finished setting up your device.</string>
+    <string name="skip_connect_string">If you\'ve already set up your garden, or want to skip this step for now, click \"Skip\" below.</string>
+    <string name="start_connecting">Start Connecting</string>
+    <string name="device_id_key">SETUP_DEVICE_ID</string>
+    <string name="uuid_key">FIREBASE_UUID</string>
+    <string name="skip_connect">Skip Setup</string>
+    <string name="login_fail">Login Failed</string>
+    <string name="bad_input">Bad Input</string>
+    <string name="register_success">Successfully registered\n</string>
+    <string name="register_fail">Could not register\n</string>
+    <string name="shared_pref_key">com.lfg.morgantenney.capsa.PREF_KEY</string>
+    <string name="user_id_shared_pref_key">com.lfg.morgantenney.capsa.USER_ID_SHARED_PREF_KEY</string>
+    <string name="garden_list_firebase_child">garden_lists</string>
+    <string name="garden_schedule_firebase_child">garden_schedules</string>
+    <string name="no_new_garden">No New Garden</string>
+    <string name="water_level">Water Level:</string>
+    <string name="water_level_fine">Fine</string>
+    <string name="water_level_low">Low</string>
+    <string name="light_state">Light:</string>
+    <string name="light_state_on">On</string>
+    <string name="light_state_off">Off</string>
+    <string name="action_logout">Log Out</string>
+    <string name="action_new_garden">Add New Garden</string>
+    <string name="new_garden_name">New Garden Name</string>
+    <string name="delete">Delete</string>
+    <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
+    <string name="title">Schedule</string>
+    <string name="description">Select times for the lights to be on</string>
+    <string name="schedule_device_id_key">SCHEDULE_DEVICE_ID</string>
+</resources>
