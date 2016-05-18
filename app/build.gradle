@@ -33,4 +33,5 @@ dependencies {
     compile 'io.particle:devicesetup:0.3.6'
     compile 'com.firebase:firebase-client-android:2.5.2+'
     compile 'com.google.android.gms:play-services-appindexing:8.1.0'
+    compile 'in.workarounds.typography:typography:0.0.8'
 }

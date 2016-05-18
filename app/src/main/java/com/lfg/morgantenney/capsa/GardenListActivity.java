@@ -255,6 +255,7 @@ public class GardenListActivity extends AppCompatActivity {
                 gAdapter.add(newEntry);
                 fKey.setValue(newEntry);
             }
+            setupStatusListener(newEntry);
         }
     }
 
